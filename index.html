@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>産学連携実習マッチングアプリ</title>
+</head>
+<body>
+    <h1>産学連携実習マッチングアプリ</h1>
+    <p>これは産学連携実習マッチングのテストアプリです</p>
+    <h2>R＆Dマネジメント研究室</h2>
+    <p>アプリ開発中です</p>
+    <form>
+        <label for="name">名前：</label>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="company">会社名：</label>
+        <select id="company" name="company">
+            <option value="相栄産業株式会社">相栄産業株式会社</option>
+            <option value="相場産業株式会社">相場産業株式会社</option>
+            <option value="浅野金属工業株式会社">浅野金属工業株式会社</option>
+            <option value="イーエヌシステム株式会社">イーエヌシステム株式会社</option>
+        </select><br><br>
+        <button type="submit">送信</button>
+        <button type="button">キャンセル</button>
+    </form>
+    <script>
+        function find_best_company(lunch, field) {
+            var companies = {
+                '相栄産業株式会社': {'昼食': 'あり', '分野': '開発'},
+                '相場産業株式会社': {'昼食': 'なし', '分野': '生産'},
+                '浅野金属工業株式会社': {'昼食': 'あり', '分野': '生産'},
+                'イーエヌシステム株式会社': {'昼食': 'なし', '分野': '開発'},
+            };
+            var matching_companies = [];
+            for (var company in companies) {
+                if (companies.hasOwnProperty(company)) {
+                    if (companies[company]['昼食'] === lunch && companies[company]['分野'] === field) {
+                        matching_companies.push(company);
+                    }
+                }
+            }
+            return matching_companies;
+        }
+
+        function main() {
+            var desired_lunch = document.querySelector('input[name="lunch"]:checked').value;
+            var desired_field = document.querySelector('input[name="field"]:checked').value;
+            var best_companies = find_best_company(desired_lunch, desired_field);
+            var output = document.getElementById('output');
+            if (best_companies.length > 0) {
+                output.innerHTML = '<p>あなたに合った会社は次のとおりです：</p><ul>';
+                for (var i = 0; i < best_companies.length; i++) {
+                    output.innerHTML += '<li>' + best_companies[i] + '</li>';
+                }
+                output.innerHTML += '</ul>';
+            } else {
+                output.innerHTML = '<p>条件に合う会社が見つかりませんでした。</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.querySelector('form');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                main();
+            });
+        });
+    </script>
+    <div id="output"></div>
+</body>
+</html>
